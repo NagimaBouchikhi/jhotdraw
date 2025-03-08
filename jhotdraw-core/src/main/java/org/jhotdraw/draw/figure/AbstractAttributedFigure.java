@@ -400,15 +400,25 @@ public abstract class AbstractAttributedFigure implements Figure, Cloneable {
 
   protected void validate() {}
 
+  /**
+   * Validates that changed() is called properly in relation to willChange().
+   * @throws IllegalStateException if changingDepth is less than 1
+   */
+  private void validateChangeState() {
+    if (changingDepth < 1) {
+      throw new IllegalStateException(
+          "changed was called without a prior call to willChange. " + changingDepth);
+    }
+  }
+
   /** Informs that a figure changed the area of its display box. */
   @Override
   public void changed() {
+    this.validateChangeState();
+
     if (changingDepth == 1) {
       validate();
       fireFigureChanged(getDrawingArea());
-    } else if (changingDepth < 1) {
-      throw new IllegalStateException(
-          "changed was called without a prior call to willChange. " + changingDepth);
     }
     modified = true;
     changingDepth--;
