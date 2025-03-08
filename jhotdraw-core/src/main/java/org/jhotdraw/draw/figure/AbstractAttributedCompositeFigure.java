@@ -90,7 +90,7 @@ public abstract class AbstractAttributedCompositeFigure extends AbstractAttribut
 
     @Override
     public void areaInvalidated(FigureEvent e) {
-      fireAreaInvalidated(e);
+      fireAreaInvalidatedEvent(e);
     }
 
     @Override

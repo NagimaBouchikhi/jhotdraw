@@ -256,7 +256,7 @@ public abstract class AbstractAttributedFigure implements Figure, Cloneable {
   }
 
   /** Notify all listenerList that have registered interest for notification on this event type. */
-  protected void fireAreaInvalidated(FigureEvent event) {
+  protected void fireAreaInvalidatedEvent(FigureEvent event) {
     for (FigureListener listener : listenerList.getListeners(FigureListener.class)) {
       listener.areaInvalidated(event);
     }
