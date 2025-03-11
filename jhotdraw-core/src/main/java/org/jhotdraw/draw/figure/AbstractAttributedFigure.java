@@ -7,7 +7,13 @@
  */
 package org.jhotdraw.draw.figure;
 
-import static org.jhotdraw.draw.AttributeKeys.*;
+import static org.jhotdraw.draw.AttributeKeys.FILL_COLOR;
+import static org.jhotdraw.draw.AttributeKeys.OPACITY;
+import static org.jhotdraw.draw.AttributeKeys.STROKE_COLOR;
+import static org.jhotdraw.draw.AttributeKeys.STROKE_WIDTH;
+import static org.jhotdraw.draw.AttributeKeys.TEXT_COLOR;
+import static org.jhotdraw.draw.AttributeKeys.TEXT_SHADOW_COLOR;
+import static org.jhotdraw.draw.AttributeKeys.TEXT_SHADOW_OFFSET;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -222,10 +228,6 @@ public abstract class AbstractAttributedFigure implements Figure, Cloneable {
   public void resetModified() {
     modified = false;
   }
-
-  //  protected Object getLock() {
-  //    return (getDrawing() == null) ? this : getDrawing().getLock();
-  //  }
 
   /** tool method to process a listener and create its event object lazily. */
   protected void fireFigureEvent(

@@ -14,3 +14,6 @@ Lien commit : ```https://github.com/wumpz/jhotdraw/commit/1292c196386c181d8c0310
 Dans la méthode changed(), il y a une vérification de condition qui pourrait être extraite
 ``` https://github.com/wumpz/jhotdraw/commit/ac61183b0871106f531d5b611025ead2f7beb860 ```
 
+3 eme modif 
+![Suppression Code Mort](<Picture/Suppression Code Mort getLock.PNG>)
+Suppression d'un code mort -> il était commenté
