@@ -79,8 +79,7 @@ public abstract class AbstractAttributedFigure implements Figure, Cloneable {
    */
   protected int changingDepth = 0;
 
-  @Override
-  public void draw(Graphics2D g) {
+  public void drawfillColor(Graphics2D g) {
     if (attr().get(FILL_COLOR) != null) {
       var fillColor = attr().get(FILL_COLOR);
       Float opacity = attr().get(OPACITY);
@@ -90,11 +89,17 @@ public abstract class AbstractAttributedFigure implements Figure, Cloneable {
       g.setColor(fillColor);
       drawFill(g);
     }
+  }
+
+  public void drawStrokeColor(Graphics2D g) {
     if (attr().get(STROKE_COLOR) != null && attr().get(STROKE_WIDTH) >= 0d) {
       g.setStroke(AttributeKeys.getStroke(this, AttributeKeys.getScaleFactorFromGraphics(g)));
       g.setColor(attr().get(STROKE_COLOR));
       drawStroke(g);
     }
+  }
+
+  public void drawTextColor(Graphics2D g) {
     if (attr().get(TEXT_COLOR) != null) {
       if (attr().get(TEXT_SHADOW_COLOR) != null && attr().get(TEXT_SHADOW_OFFSET) != null) {
         Dimension2DDouble d = attr().get(TEXT_SHADOW_OFFSET);
@@ -106,6 +111,40 @@ public abstract class AbstractAttributedFigure implements Figure, Cloneable {
       g.setColor(attr().get(TEXT_COLOR));
       drawText(g);
     }
+  }
+
+  @Override
+  public void draw(Graphics2D g) {
+    // if (attr().get(FILL_COLOR) != null) {
+    //   var fillColor = attr().get(FILL_COLOR);
+    //   Float opacity = attr().get(OPACITY);
+    //   if (opacity < 1) {
+    //     fillColor = new Color(fillColor.getRGB() & 0xffffff | ((int) (opacity * 256) << 24),
+    // true);
+    //   }
+    //   g.setColor(fillColor);
+    //   drawFill(g);
+    // }
+    // if (attr().get(STROKE_COLOR) != null && attr().get(STROKE_WIDTH) >= 0d) {
+    //   g.setStroke(AttributeKeys.getStroke(this, AttributeKeys.getScaleFactorFromGraphics(g)));
+    //   g.setColor(attr().get(STROKE_COLOR));
+    //   drawStroke(g);
+    // }
+    // if (attr().get(TEXT_COLOR) != null) {
+    //   if (attr().get(TEXT_SHADOW_COLOR) != null && attr().get(TEXT_SHADOW_OFFSET) != null) {
+    //     Dimension2DDouble d = attr().get(TEXT_SHADOW_OFFSET);
+    //     g.translate(d.width, d.height);
+    //     g.setColor(attr().get(TEXT_SHADOW_COLOR));
+    //     drawText(g);
+    //     g.translate(-d.width, -d.height);
+    //   }
+    //   g.setColor(attr().get(TEXT_COLOR));
+    //   drawText(g);
+    // }
+
+    this.drawfillColor(g);
+    this.drawStrokeColor(g);
+    this.drawTextColor(g);
   }
 
   public double getStrokeMiterLimitFactor() {

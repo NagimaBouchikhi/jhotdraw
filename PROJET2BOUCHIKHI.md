@@ -1,5 +1,9 @@
 BOUCHIKHI NAGIMA PROJET PART 2 
 
+On a reussis a executer le projet 
+![alt text](Picture/JHOTDRAWExecution.PNG)
+Il étais tres complique de trouver et de comprendre le fichier a executer pour voir l'application 
+
 1 ere modif 
 ![Avant Modif](Picture/PetitModif_NomdeFct.PNG)
 Il existe trois méthodes fireAreaInvalidated avec des signatures différentes 
