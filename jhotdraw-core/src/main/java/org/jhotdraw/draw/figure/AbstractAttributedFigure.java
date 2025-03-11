@@ -57,6 +57,7 @@ import org.jhotdraw.utils.geom.Geom;
 public abstract class AbstractAttributedFigure implements Figure, Cloneable {
 
   private static final long serialVersionUID = 1L;
+  private static final double HIT_GROWTH_FACTOR = 1.1;
   protected EventListenerList listenerList = new EventListenerList();
   private Drawing drawing;
   private boolean isSelectable = true;
@@ -173,7 +174,7 @@ public abstract class AbstractAttributedFigure implements Figure, Cloneable {
     //    }
     //    width++;
     Rectangle2D.Double r = getBounds(scale);
-    double grow = AttributeKeys.getPerpendicularHitGrowth(this, scale) * 1.1 + 1;
+    double grow = AttributeKeys.getPerpendicularHitGrowth(this, scale) * HIT_GROWTH_FACTOR + 1;
     Geom.grow(r, grow, grow);
     return r;
   }
