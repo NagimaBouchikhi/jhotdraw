@@ -54,7 +54,8 @@ import org.jhotdraw.utils.geom.Geom;
  * This abstract class can be extended to implement a {@link Figure} which has its own attribute
  * set.
  */
-public abstract class AbstractAttributedFigure implements Figure, Cloneable {
+public abstract class AbstractAttributedFigure
+    implements Figure, DrawableFigure, SelectableFigure, TransformableFigure {
 
   private static final long serialVersionUID = 1L;
   private static final double HIT_GROWTH_FACTOR = 1.1;
@@ -184,21 +185,21 @@ public abstract class AbstractAttributedFigure implements Figure, Cloneable {
    * AbstractAttributedFigure configures the Graphics2D object with the FILL_COLOR attribute before
    * calling this method. If the FILL_COLOR attribute is null, this method is not called.
    */
-  protected void drawFill(java.awt.Graphics2D g) {}
+  public void drawFill(java.awt.Graphics2D g) {}
 
   /**
    * This method is called by method draw() to draw the lines of the figure . AttributedFigure
    * configures the Graphics2D object with the STROKE_COLOR attribute before calling this method. If
    * the STROKE_COLOR attribute is null, this method is not called.
    */
-  protected void drawStroke(java.awt.Graphics2D g) {}
+  public void drawStroke(java.awt.Graphics2D g) {}
 
   /**
    * This method is called by method draw() to draw the text of the figure .
    * AbstractAttributedFigure configures the Graphics2D object with the TEXT_COLOR attribute before
    * calling this method. If the TEXT_COLOR attribute is null, this method is not called.
    */
-  protected void drawText(java.awt.Graphics2D g) {}
+  public void drawText(java.awt.Graphics2D g) {}
 
   @Override
   public AbstractAttributedFigure clone() {
