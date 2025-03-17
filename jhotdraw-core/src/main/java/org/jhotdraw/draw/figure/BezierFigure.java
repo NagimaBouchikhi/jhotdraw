@@ -113,7 +113,7 @@ public class BezierFigure extends AbstractAttributedFigure {
   // CLONING
   // EVENT HANDLING
   @Override
-  protected void drawStroke(Graphics2D g) {
+  public void drawStroke(Graphics2D g) {
     if (isClosed()) {
       double grow = AttributeKeys.getPerpendicularDrawGrowth(
           this, AttributeKeys.getScaleFactorFromGraphics(g));
@@ -156,7 +156,7 @@ public class BezierFigure extends AbstractAttributedFigure {
   }
 
   @Override
-  protected void drawFill(Graphics2D g) {
+  public void drawFill(Graphics2D g) {
     if (isClosed() || attr().get(UNCLOSED_PATH_FILLED)) {
       double grow = AttributeKeys.getPerpendicularFillGrowth(
           this, AttributeKeys.getScaleFactorFromGraphics(g));
@@ -655,5 +655,11 @@ public class BezierFigure extends AbstractAttributedFigure {
       }
     }
     return false;
+  }
+
+  @Override
+  public void setDraggable() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'setDraggable'");
   }
 }

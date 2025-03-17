@@ -43,13 +43,13 @@ public class ODGEllipseFigure extends ODGAttributedFigure implements ODGFigure {
 
   // DRAWING
   @Override
-  protected void drawFill(Graphics2D g) {
+  public void drawFill(Graphics2D g) {
     g.fill(ellipse);
     // g.fill(getTransformedShape());
   }
 
   @Override
-  protected void drawStroke(Graphics2D g) {
+  public void drawStroke(Graphics2D g) {
     g.draw(ellipse);
     /*
     if (TRANSFORM.get(this) == null) {
@@ -235,5 +235,11 @@ public class ODGEllipseFigure extends ODGAttributedFigure implements ODGFigure {
   public void invalidate() {
     super.invalidate();
     cachedTransformedShape = null;
+  }
+
+  @Override
+  public void setDraggable() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'setDraggable'");
   }
 }

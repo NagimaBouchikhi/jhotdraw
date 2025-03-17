@@ -47,7 +47,7 @@ public class DiamondFigure extends AbstractAttributedFigure {
 
   // DRAWING
   @Override
-  protected void drawFill(Graphics2D g) {
+  public void drawFill(Graphics2D g) {
     Rectangle2D.Double r = (Rectangle2D.Double) rectangle.clone();
     if (attr().get(IS_QUADRATIC)) {
       double side = Math.max(r.width, r.height);
@@ -79,7 +79,7 @@ public class DiamondFigure extends AbstractAttributedFigure {
   }
 
   @Override
-  protected void drawStroke(Graphics2D g) {
+  public void drawStroke(Graphics2D g) {
     Rectangle2D.Double r = (Rectangle2D.Double) rectangle.clone();
     if (attr().get(IS_QUADRATIC)) {
       double side = Math.max(r.width, r.height);
@@ -241,4 +241,10 @@ public class DiamondFigure extends AbstractAttributedFigure {
     return that;
   }
   // EVENT HANDLING
+
+  @Override
+  public void setDraggable() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'setDraggable'");
+  }
 }

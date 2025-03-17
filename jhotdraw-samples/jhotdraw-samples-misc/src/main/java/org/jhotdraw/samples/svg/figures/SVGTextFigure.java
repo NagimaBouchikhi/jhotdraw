@@ -67,15 +67,15 @@ public class SVGTextFigure extends SVGAttributedFigure implements TextHolderFigu
 
   // DRAWING
   @Override
-  protected void drawText(java.awt.Graphics2D g) {}
+  public void drawText(java.awt.Graphics2D g) {}
 
   @Override
-  protected void drawFill(Graphics2D g) {
+  public void drawFill(Graphics2D g) {
     g.fill(getTextShape());
   }
 
   @Override
-  protected void drawStroke(Graphics2D g) {
+  public void drawStroke(Graphics2D g) {
     g.draw(getTextShape());
   }
 
@@ -460,5 +460,11 @@ public class SVGTextFigure extends SVGAttributedFigure implements TextHolderFigu
   @Override
   public boolean isTextOverflow() {
     return false;
+  }
+
+  @Override
+  public void setDraggable() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'setDraggable'");
   }
 }

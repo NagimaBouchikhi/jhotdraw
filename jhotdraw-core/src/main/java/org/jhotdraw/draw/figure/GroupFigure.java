@@ -42,4 +42,10 @@ public class GroupFigure extends AbstractAttributedCompositeFigure {
     }
     return true;
   }
+
+  @Override
+  public void setDraggable() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'setDraggable'");
+  }
 }

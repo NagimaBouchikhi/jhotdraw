@@ -66,15 +66,15 @@ public class SVGTextAreaFigure extends SVGAttributedFigure implements SVGFigure,
 
   // DRAWING
   @Override
-  protected void drawText(java.awt.Graphics2D g) {}
+  public void drawText(java.awt.Graphics2D g) {}
 
   @Override
-  protected void drawFill(Graphics2D g) {
+  public void drawFill(Graphics2D g) {
     g.fill(getTextShape());
   }
 
   @Override
-  protected void drawStroke(Graphics2D g) {
+  public void drawStroke(Graphics2D g) {
     g.draw(getTextShape());
   }
 
@@ -598,5 +598,11 @@ public class SVGTextAreaFigure extends SVGAttributedFigure implements SVGFigure,
     SVGTextAreaFigure that = (SVGTextAreaFigure) super.clone();
     that.bounds = (Rectangle2D.Double) this.bounds.clone();
     return that;
+  }
+
+  @Override
+  public void setDraggable() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'setDraggable'");
   }
 }

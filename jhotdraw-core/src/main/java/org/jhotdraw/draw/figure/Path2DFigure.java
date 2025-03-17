@@ -113,7 +113,7 @@ public class Path2DFigure extends AbstractAttributedFigure {
   }
 
   @Override
-  protected void drawStroke(Graphics2D g) {
+  public void drawStroke(Graphics2D g) {
     // if (isClosed()) {
     double grow =
         AttributeKeys.getPerpendicularDrawGrowth(this, AttributeKeys.getScaleFactorFromGraphics(g));
@@ -130,5 +130,11 @@ public class Path2DFigure extends AbstractAttributedFigure {
     //      g.draw(getCappedPath());
     //    }
     //    drawCaps(g);
+  }
+
+  @Override
+  public void setDraggable() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'setDraggable'");
   }
 }

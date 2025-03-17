@@ -55,7 +55,7 @@ public class ODGRectFigure extends ODGAttributedFigure implements ODGFigure {
 
   // DRAWING
   @Override
-  protected void drawFill(Graphics2D g) {
+  public void drawFill(Graphics2D g) {
     if (getArcHeight() == 0d && getArcWidth() == 0d) {
       g.fill(roundrect.getBounds2D());
     } else {
@@ -64,7 +64,7 @@ public class ODGRectFigure extends ODGAttributedFigure implements ODGFigure {
   }
 
   @Override
-  protected void drawStroke(Graphics2D g) {
+  public void drawStroke(Graphics2D g) {
     if (getArcHeight() == 0d && getArcWidth() == 0d) {
       g.draw(roundrect.getBounds2D());
     } else {
@@ -295,5 +295,11 @@ public class ODGRectFigure extends ODGAttributedFigure implements ODGFigure {
   public void invalidate() {
     super.invalidate();
     invalidateTransformedShape();
+  }
+
+  @Override
+  public void setDraggable() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'setDraggable'");
   }
 }

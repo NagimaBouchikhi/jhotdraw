@@ -27,10 +27,10 @@ public class StraightLineFigure extends AbstractAttributedFigure {
   }
 
   @Override
-  protected void drawFill(Graphics2D g) {}
+  public void drawFill(Graphics2D g) {}
 
   @Override
-  protected void drawStroke(Graphics2D g) {
+  public void drawStroke(Graphics2D g) {
     g.draw(line);
   }
 
@@ -78,5 +78,11 @@ public class StraightLineFigure extends AbstractAttributedFigure {
     StraightLineFigure that = (StraightLineFigure) super.clone();
     that.line = (Line2D.Double) this.line.clone();
     return that;
+  }
+
+  @Override
+  public void setDraggable() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'setDraggable'");
   }
 }

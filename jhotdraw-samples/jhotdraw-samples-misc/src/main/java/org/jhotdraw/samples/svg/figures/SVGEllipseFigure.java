@@ -48,14 +48,14 @@ public class SVGEllipseFigure extends SVGAttributedFigure implements SVGFigure {
 
   // DRAWING
   @Override
-  protected void drawFill(Graphics2D g) {
+  public void drawFill(Graphics2D g) {
     if (ellipse.width > 0 && ellipse.height > 0) {
       g.fill(ellipse);
     }
   }
 
   @Override
-  protected void drawStroke(Graphics2D g) {
+  public void drawStroke(Graphics2D g) {
     if (ellipse.width > 0 && ellipse.height > 0) {
       g.draw(ellipse);
     }
@@ -244,5 +244,11 @@ public class SVGEllipseFigure extends SVGAttributedFigure implements SVGFigure {
     super.invalidate();
     cachedTransformedShape = null;
     cachedHitShape = null;
+  }
+
+  @Override
+  public void setDraggable() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'setDraggable'");
   }
 }

@@ -109,10 +109,10 @@ public class SVGImageFigure extends SVGAttributedFigure implements SVGFigure, Im
   }
 
   @Override
-  protected void drawFill(Graphics2D g) {}
+  public void drawFill(Graphics2D g) {}
 
   @Override
-  protected void drawStroke(Graphics2D g) {}
+  public void drawStroke(Graphics2D g) {}
 
   // SHAPE AND BOUNDS
   public double getX() {
@@ -481,5 +481,11 @@ public class SVGImageFigure extends SVGAttributedFigure implements SVGFigure, Im
     }
     imageData = baos.toByteArray();
     bufferedImage = img;
+  }
+
+  @Override
+  public void setDraggable() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'setDraggable'");
   }
 }

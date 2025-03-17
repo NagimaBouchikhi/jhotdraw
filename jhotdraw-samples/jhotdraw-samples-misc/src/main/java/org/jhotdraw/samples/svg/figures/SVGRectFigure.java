@@ -78,7 +78,7 @@ public class SVGRectFigure extends SVGAttributedFigure implements SVGFigure {
 
   // DRAWING
   @Override
-  protected void drawFill(Graphics2D g) {
+  public void drawFill(Graphics2D g) {
     if (getArcHeight() == 0d && getArcWidth() == 0d) {
       g.fill(roundrect.getBounds2D());
     } else {
@@ -87,7 +87,7 @@ public class SVGRectFigure extends SVGAttributedFigure implements SVGFigure {
   }
 
   @Override
-  protected void drawStroke(Graphics2D g) {
+  public void drawStroke(Graphics2D g) {
     if (roundrect.archeight == 0 && roundrect.arcwidth == 0) {
       g.draw(roundrect.getBounds2D());
     } else {
@@ -358,5 +358,11 @@ public class SVGRectFigure extends SVGAttributedFigure implements SVGFigure {
   public void invalidate() {
     super.invalidate();
     invalidateTransformedShape();
+  }
+
+  @Override
+  public void setDraggable() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'setDraggable'");
   }
 }

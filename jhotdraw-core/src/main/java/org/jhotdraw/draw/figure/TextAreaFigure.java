@@ -85,7 +85,7 @@ public class TextAreaFigure extends AbstractAttributedDecoratedFigure implements
 
   // DRAWING
   @Override
-  protected void drawText(Graphics2D g) {
+  public void drawText(Graphics2D g) {
     if (getText() != null || isEditable()) {
       Font font = getFont();
       boolean isUnderlined = attr().get(FONT_UNDERLINE);
@@ -285,12 +285,12 @@ public class TextAreaFigure extends AbstractAttributedDecoratedFigure implements
   }
 
   @Override
-  protected void drawFill(Graphics2D g) {
+  public void drawFill(Graphics2D g) {
     g.fill(bounds);
   }
 
   @Override
-  protected void drawStroke(Graphics2D g) {
+  public void drawStroke(Graphics2D g) {
     g.draw(bounds);
   }
 
@@ -517,5 +517,11 @@ public class TextAreaFigure extends AbstractAttributedDecoratedFigure implements
     }
     return new Dimension2DDouble(
         -Math.min(textRect.x, 0) + textRect.width, -Math.min(textRect.y, 0) + textRect.height);
+  }
+
+  @Override
+  public void setDraggable() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'setDraggable'");
   }
 }

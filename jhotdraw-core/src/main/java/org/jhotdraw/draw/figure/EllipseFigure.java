@@ -64,7 +64,7 @@ public class EllipseFigure extends AbstractAttributedFigure {
   }
 
   @Override
-  protected void drawFill(Graphics2D g) {
+  public void drawFill(Graphics2D g) {
     Ellipse2D.Double r = (Ellipse2D.Double) ellipse.clone();
     double grow =
         AttributeKeys.getPerpendicularFillGrowth(this, AttributeKeys.getScaleFactorFromGraphics(g));
@@ -78,7 +78,7 @@ public class EllipseFigure extends AbstractAttributedFigure {
   }
 
   @Override
-  protected void drawStroke(Graphics2D g) {
+  public void drawStroke(Graphics2D g) {
     Ellipse2D.Double r = (Ellipse2D.Double) ellipse.clone();
     double grow =
         AttributeKeys.getPerpendicularDrawGrowth(this, AttributeKeys.getScaleFactorFromGraphics(g));
@@ -143,5 +143,11 @@ public class EllipseFigure extends AbstractAttributedFigure {
   @Override
   public Object getTransformRestoreData() {
     return ellipse.clone();
+  }
+
+  @Override
+  public void setDraggable() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'setDraggable'");
   }
 }

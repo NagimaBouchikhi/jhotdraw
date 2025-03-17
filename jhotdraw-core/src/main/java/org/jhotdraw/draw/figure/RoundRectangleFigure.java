@@ -52,7 +52,7 @@ public class RoundRectangleFigure extends AbstractAttributedFigure {
 
   // DRAWING
   @Override
-  protected void drawFill(Graphics2D g) {
+  public void drawFill(Graphics2D g) {
     RoundRectangle2D.Double r = (RoundRectangle2D.Double) roundrect.clone();
     double grow =
         AttributeKeys.getPerpendicularFillGrowth(this, AttributeKeys.getScaleFactorFromGraphics(g));
@@ -68,7 +68,7 @@ public class RoundRectangleFigure extends AbstractAttributedFigure {
   }
 
   @Override
-  protected void drawStroke(Graphics2D g) {
+  public void drawStroke(Graphics2D g) {
     RoundRectangle2D.Double r = (RoundRectangle2D.Double) roundrect.clone();
     double grow =
         AttributeKeys.getPerpendicularDrawGrowth(this, AttributeKeys.getScaleFactorFromGraphics(g));
@@ -200,6 +200,12 @@ public class RoundRectangleFigure extends AbstractAttributedFigure {
     RoundRectangleFigure that = (RoundRectangleFigure) super.clone();
     that.roundrect = (RoundRectangle2D.Double) this.roundrect.clone();
     return that;
+  }
+
+  @Override
+  public void setDraggable() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'setDraggable'");
   }
 
   // EVENT HANDLING

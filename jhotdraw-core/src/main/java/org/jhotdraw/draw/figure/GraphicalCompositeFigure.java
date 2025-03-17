@@ -335,4 +335,10 @@ public class GraphicalCompositeFigure extends AbstractAttributedCompositeFigure 
     if (presentationFigure != null) presentationFigure.willChange();
     super.willChange();
   }
+
+  @Override
+  public void setDraggable() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'setDraggable'");
+  }
 }

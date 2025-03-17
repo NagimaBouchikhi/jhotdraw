@@ -70,13 +70,13 @@ public class TextFigure extends AbstractAttributedDecoratedFigure
 
   // DRAWING
   @Override
-  protected void drawStroke(java.awt.Graphics2D g) {}
+  public void drawStroke(java.awt.Graphics2D g) {}
 
   @Override
-  protected void drawFill(java.awt.Graphics2D g) {}
+  public void drawFill(java.awt.Graphics2D g) {}
 
   @Override
-  protected void drawText(java.awt.Graphics2D g) {
+  public void drawText(java.awt.Graphics2D g) {
     if (getText() != null || isEditable()) {
       TextLayout layout = getTextLayout(
           AttributeKeys.getGlobalValueFactor(this, AttributeKeys.getScaleFactorFromGraphics(g)));
@@ -415,5 +415,11 @@ public class TextFigure extends AbstractAttributedDecoratedFigure
   @Override
   public boolean isTextOverflow() {
     return false;
+  }
+
+  @Override
+  public void setDraggable() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'setDraggable'");
   }
 }

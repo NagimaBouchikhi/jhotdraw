@@ -513,4 +513,10 @@ public class SVGPathFigure extends AbstractAttributedCompositeFigure implements 
     attr().set(TRANSFORM, null);
     changed();
   }
+
+  @Override
+  public void setDraggable() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'setDraggable'");
+  }
 }

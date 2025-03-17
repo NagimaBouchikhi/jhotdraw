@@ -72,7 +72,7 @@ public class TriangleFigure extends AbstractAttributedFigure {
   }
 
   @Override
-  protected void drawFill(Graphics2D g) {
+  public void drawFill(Graphics2D g) {
     double scaleFactor = AttributeKeys.getScaleFactorFromGraphics(g);
     Shape triangle = getBezierPath();
     double grow = AttributeKeys.getPerpendicularFillGrowth(this, scaleFactor);
@@ -85,7 +85,7 @@ public class TriangleFigure extends AbstractAttributedFigure {
   }
 
   @Override
-  protected void drawStroke(Graphics2D g) {
+  public void drawStroke(Graphics2D g) {
     double scaleFactor = AttributeKeys.getScaleFactorFromGraphics(g);
     Shape triangle = getBezierPath();
     double grow = AttributeKeys.getPerpendicularDrawGrowth(this, scaleFactor);
@@ -248,5 +248,10 @@ public class TriangleFigure extends AbstractAttributedFigure {
   @Override
   public Object getTransformRestoreData() {
     return rectangle.clone();
+  }
+
+  @Override
+  public void setDraggable() {
+    throw new UnsupportedOperationException("Unimplemented method 'setDraggable'");
   }
 }

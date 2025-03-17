@@ -88,14 +88,20 @@ public class AbstractFigureTest {
     }
 
     @Override
-    protected void drawFill(Graphics2D g) {}
+    public void drawFill(Graphics2D g) {}
 
     @Override
-    protected void drawStroke(Graphics2D g) {}
+    public void drawStroke(Graphics2D g) {}
 
     @Override
     public boolean contains(Point2D.Double p, double scaleDenominator) {
       return false;
+    }
+
+    @Override
+    public void setDraggable() {
+      // TODO Auto-generated method stub
+      throw new UnsupportedOperationException("Unimplemented method 'setDraggable'");
     }
   }
 }
