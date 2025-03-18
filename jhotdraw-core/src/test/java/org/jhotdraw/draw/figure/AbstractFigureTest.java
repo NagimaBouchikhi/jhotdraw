@@ -21,6 +21,7 @@ package org.jhotdraw.draw.figure;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -28,22 +29,29 @@ import org.junit.jupiter.api.Test;
  */
 public class AbstractFigureTest {
 
+  AbstractFigureMock mock;
+
+  @BeforeEach
+  public void init() {
+    this.mock = new AbstractFigureMock();
+    // this.grph = new Graphics2D();
+  }
+
   @Test
   public void testChangedWithoutWillChange() {
-    assertThrows(IllegalStateException.class, () -> new AbstractFigureMock().changed());
+    assertThrows(IllegalStateException.class, () -> mock.changed());
   }
 
   @Test
   public void testWillChangeChangedEvents() {
-    AbstractAttributedFigure figure = new AbstractFigureMock();
-    assertEquals(figure.getChangingDepth(), 0);
-    figure.willChange();
-    assertEquals(figure.getChangingDepth(), 1);
-    figure.willChange();
-    assertEquals(figure.getChangingDepth(), 2);
-    figure.changed();
-    assertEquals(figure.getChangingDepth(), 1);
-    figure.changed();
-    assertEquals(figure.getChangingDepth(), 0);
+    assertEquals(mock.getChangingDepth(), 0);
+    mock.willChange();
+    assertEquals(mock.getChangingDepth(), 1);
+    mock.willChange();
+    assertEquals(mock.getChangingDepth(), 2);
+    mock.changed();
+    assertEquals(mock.getChangingDepth(), 1);
+    mock.changed();
+    assertEquals(mock.getChangingDepth(), 0);
   }
 }
