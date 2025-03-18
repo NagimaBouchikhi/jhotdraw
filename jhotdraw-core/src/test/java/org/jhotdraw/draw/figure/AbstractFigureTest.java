@@ -21,10 +21,6 @@ package org.jhotdraw.draw.figure;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -34,12 +30,12 @@ public class AbstractFigureTest {
 
   @Test
   public void testChangedWithoutWillChange() {
-    assertThrows(IllegalStateException.class, () -> new AbstractFigureImpl().changed());
+    assertThrows(IllegalStateException.class, () -> new AbstractFigureMock().changed());
   }
 
   @Test
   public void testWillChangeChangedEvents() {
-    AbstractAttributedFigure figure = new AbstractFigureImpl();
+    AbstractAttributedFigure figure = new AbstractFigureMock();
     assertEquals(figure.getChangingDepth(), 0);
     figure.willChange();
     assertEquals(figure.getChangingDepth(), 1);
@@ -49,59 +45,5 @@ public class AbstractFigureTest {
     assertEquals(figure.getChangingDepth(), 1);
     figure.changed();
     assertEquals(figure.getChangingDepth(), 0);
-  }
-
-  public class AbstractFigureImpl extends AbstractAttributedFigure {
-
-    @Override
-    public void draw(Graphics2D g) {}
-
-    @Override
-    public Rectangle2D.Double getBounds(double scale) {
-      return null;
-    }
-
-    @Override
-    public boolean contains(Point2D.Double p) {
-      return true;
-    }
-
-    @Override
-    public Object getTransformRestoreData() {
-      return null;
-    }
-
-    @Override
-    public void restoreTransformTo(Object restoreData) {}
-
-    @Override
-    public void transform(AffineTransform tx) {}
-
-    @Override
-    public Rectangle2D.Double getDrawingArea(double factor) {
-      return null;
-    }
-
-    @Override
-    public Attributes attr() {
-      return null;
-    }
-
-    @Override
-    public void drawFill(Graphics2D g) {}
-
-    @Override
-    public void drawStroke(Graphics2D g) {}
-
-    @Override
-    public boolean contains(Point2D.Double p, double scaleDenominator) {
-      return false;
-    }
-
-    @Override
-    public void setDraggable() {
-      // TODO Auto-generated method stub
-      throw new UnsupportedOperationException("Unimplemented method 'setDraggable'");
-    }
   }
 }
