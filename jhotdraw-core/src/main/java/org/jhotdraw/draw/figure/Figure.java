@@ -193,6 +193,11 @@ public interface Figure extends AttributeProvider, Cloneable, Serializable {
   public Rectangle2D.Double getDrawingArea();
 
   /**
+   * Returns the drawing to which this figure belongs.
+   */
+  public Drawing getDrawing();
+
+  /**
    * Returns the drawing area of the figure as a Rectangle.
    *
    * <p>The drawing area is used to inform {@link DrawingView} about the area that is needed to draw

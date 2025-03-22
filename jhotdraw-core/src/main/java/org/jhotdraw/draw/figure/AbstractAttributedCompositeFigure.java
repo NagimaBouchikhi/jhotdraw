@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
+import javax.swing.event.EventListenerList;
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
 import org.jhotdraw.draw.AttributeKeys;
@@ -63,6 +64,11 @@ public abstract class AbstractAttributedCompositeFigure extends AbstractAttribut
   /** Handles figure changes in the children. */
   protected EventHandler eventHandler;
 
+  // Add this field if it's missing
+  protected EventListenerList listenerList = new EventListenerList();
+
+  protected FigureEventDispatcher eventDispatcher;
+
   protected class EventHandler extends FigureListenerAdapter
       implements UndoableEditListener, Serializable {
 
@@ -95,7 +101,7 @@ public abstract class AbstractAttributedCompositeFigure extends AbstractAttribut
 
     @Override
     public void undoableEditHappened(UndoableEditEvent e) {
-      fireUndoableEditHappened(e.getEdit());
+      fireUndoableEditHappened(e);
     }
 
     @Override
@@ -115,7 +121,31 @@ public abstract class AbstractAttributedCompositeFigure extends AbstractAttribut
   }
 
   public AbstractAttributedCompositeFigure() {
+    super();
     eventHandler = createEventHandler();
+    eventDispatcher = new FigureEventDispatcher(this);
+  }
+
+  // Add this method to check if the figure is in a changing state
+  protected boolean isChanging() {
+    // Delegate to the FigureChangeSupport instance
+    // Return whether the figure is currently in a changing state
+    return ((FigureChangeSupport) changeSupport).isChanging();
+  }
+
+  // Add this method for compatibility with the layout method
+  protected void fireAreaInvalidatedEvent(FigureEvent e) {
+    eventDispatcher.fireAreaInvalidated(e.getInvalidatedArea());
+  }
+
+  protected void fireAreaInvalidated(Rectangle2D.Double invalidatedArea) {
+    eventDispatcher.fireAreaInvalidated(invalidatedArea);
+  }
+
+  protected void fireUndoableEditHappened(UndoableEditEvent e) {
+    if (getDrawing() != null) {
+      getDrawing().fireUndoableEditHappened(e.getEdit());
+    }
   }
 
   @Override
@@ -271,6 +301,7 @@ public abstract class AbstractAttributedCompositeFigure extends AbstractAttribut
       basicAdd(0, figure);
       fireAreaInvalidated(figure.getDrawingArea());
     }
+    changed();
   }
 
   /**
@@ -283,6 +314,7 @@ public abstract class AbstractAttributedCompositeFigure extends AbstractAttribut
       basicAdd(figure);
       fireAreaInvalidated(figure.getDrawingArea());
     }
+    changed();
   }
 
   /** Transforms the figure. */
@@ -291,6 +323,7 @@ public abstract class AbstractAttributedCompositeFigure extends AbstractAttribut
     for (Figure f : getChildren()) {
       f.transform(tx);
     }
+    changed();
     invalidate();
     // invalidate();
   }
@@ -322,6 +355,7 @@ public abstract class AbstractAttributedCompositeFigure extends AbstractAttribut
     }
     tx.translate(newBounds.x, newBounds.y);
     transform(tx);
+    changed();
   }
 
   /** Returns an iterator to iterate in Z-order front to back over the children. */
@@ -410,14 +444,13 @@ public abstract class AbstractAttributedCompositeFigure extends AbstractAttribut
     // Note: We increase and below decrease the changing depth here,
     //       because we want to ignore change events from our children
     //       why we lay them out.
-    changingDepth++;
+    willChange();
     for (Figure child : getChildren()) {
       if (child instanceof CompositeFigure) {
         CompositeFigure cf = (CompositeFigure) child;
         cf.layout(scale);
       }
     }
-    changingDepth--;
     if (getLayouter() != null) {
       Rectangle2D.Double bounds = getBounds(scale);
       Point2D.Double p = new Point2D.Double(bounds.x, bounds.y);
@@ -425,6 +458,7 @@ public abstract class AbstractAttributedCompositeFigure extends AbstractAttribut
       setBounds(new Point2D.Double(r.x, r.y), new Point2D.Double(r.x + r.width, r.y + r.height));
       invalidate();
     }
+    changed();
   }
 
   /**
@@ -453,23 +487,7 @@ public abstract class AbstractAttributedCompositeFigure extends AbstractAttribut
 
   @Override
   public void draw(Graphics2D g) {
-    Rectangle2D clipBounds = g.getClipBounds();
-    if (clipBounds != null) {
-      for (Figure child : getChildren()) {
-        if (child.isVisible()
-            && child
-                .getDrawingArea(AttributeKeys.getScaleFactorFromGraphics(g))
-                .intersects(clipBounds)) {
-          child.draw(g);
-        }
-      }
-    } else {
-      for (Figure child : getChildren()) {
-        if (child.isVisible()) {
-          child.draw(g);
-        }
-      }
-    }
+    drawFigure(g);
   }
 
   @Override
@@ -547,6 +565,7 @@ public abstract class AbstractAttributedCompositeFigure extends AbstractAttribut
   protected void invalidate() {
     cachedBounds = null;
     cachedDrawingArea = null;
+    super.invalidate();
   }
 
   @Override
@@ -580,6 +599,11 @@ public abstract class AbstractAttributedCompositeFigure extends AbstractAttribut
   }
 
   @Override
+  public Rectangle2D.Double getDrawingArea() {
+    return getDrawingArea(1.0);
+  }
+
+  @Override
   public Rectangle2D.Double getDrawingArea(double factor) {
     if (cachedDrawingArea == null) {
       if (getChildCount() == 0) {
@@ -599,6 +623,11 @@ public abstract class AbstractAttributedCompositeFigure extends AbstractAttribut
         cachedDrawingArea.y,
         cachedDrawingArea.width,
         cachedDrawingArea.height);
+  }
+
+  @Override
+  public Rectangle2D.Double getBounds() {
+    return getBounds(1.0);
   }
 
   @Override
