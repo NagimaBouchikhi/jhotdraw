@@ -63,7 +63,7 @@ public class ODGBezierFigure extends BezierFigure {
       final int index = splitSegment(p, (float) (5f / view.getScaleFactor()));
       if (index != -1) {
         final BezierPath.Node newNode = getNode(index);
-        fireUndoableEditHappened(new AbstractUndoableEdit() {
+        super.eventDispatcher.fireUndoableEditHappened(new AbstractUndoableEdit() {
           private static final long serialVersionUID = 1L;
 
           @Override

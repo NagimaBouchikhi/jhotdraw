@@ -13,8 +13,14 @@ import java.awt.Graphics2D;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import org.jhotdraw.draw.AttributeKey;
 import org.jhotdraw.draw.AttributeKeys;
+import org.jhotdraw.draw.handle.BoundsOutlineHandle;
+import org.jhotdraw.draw.handle.Handle;
+import org.jhotdraw.draw.handle.ResizeHandleKit;
 import org.jhotdraw.utils.geom.Dimension2DDouble;
 
 /**
@@ -144,5 +150,19 @@ public abstract class AbstractAttributedFigure extends AbstractFigure implements
   public Rectangle2D.Double getDrawingArea(double scale) {
     // Implémentation par défaut basée sur les limites de la figure
     return getBounds(scale);
+  }
+
+  @Override
+  public Collection<Handle> createHandles(int detailLevel) {
+    List<Handle> handles = new ArrayList<>();
+    switch (detailLevel) {
+      case -1:
+        handles.add(new BoundsOutlineHandle(this, false, true));
+        break;
+      case 0:
+        ResizeHandleKit.addResizeHandles(this, handles);
+        break;
+    }
+    return handles;
   }
 }

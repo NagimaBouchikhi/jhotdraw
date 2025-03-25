@@ -12,23 +12,31 @@ import static org.jhotdraw.draw.AttributeKeys.StrokePlacement.CENTER;
 import static org.jhotdraw.draw.AttributeKeys.StrokePlacement.INSIDE;
 import static org.jhotdraw.draw.AttributeKeys.StrokePlacement.OUTSIDE;
 
+import java.awt.Cursor;
 import java.awt.Graphics2D;
+import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
+import java.awt.geom.Point2D.Double;
 import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import javax.swing.Action;
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
 import org.jhotdraw.draw.AttributeKeys;
 import org.jhotdraw.draw.Drawing;
+import org.jhotdraw.draw.DrawingView;
+import org.jhotdraw.draw.connector.Connector;
 import org.jhotdraw.draw.event.FigureEvent;
 import org.jhotdraw.draw.event.FigureListenerAdapter;
 import org.jhotdraw.draw.handle.Handle;
 import org.jhotdraw.draw.handle.MoveHandle;
+import org.jhotdraw.draw.tool.Tool;
 import org.jhotdraw.utils.geom.Geom;
 
 /**
@@ -69,8 +77,16 @@ public class GraphicalCompositeFigure extends AbstractAttributedCompositeFigure 
     private static final long serialVersionUID = 1L;
     private GraphicalCompositeFigure owner;
 
+    // Notification de changement
+    protected FigureChangeSupport changeListener;
+
+    // Notif d'event
+    protected FigureEventDispatcher eventDispatcher;
+
     private PresentationFigureHandler(GraphicalCompositeFigure owner) {
       this.owner = owner;
+      this.changeListener = new FigureChangeSupport(owner);
+      this.eventDispatcher = new FigureEventDispatcher(owner);
     }
 
     @Override
@@ -82,7 +98,7 @@ public class GraphicalCompositeFigure extends AbstractAttributedCompositeFigure 
     public void figureChanged(FigureEvent e) {
       if (!owner.isChanging()) {
         owner.willChange();
-        owner.fireFigureChanged(e);
+        this.changeListener.fireFigureChanged(e.getFigure());
         owner.changed();
       }
     }
@@ -96,7 +112,7 @@ public class GraphicalCompositeFigure extends AbstractAttributedCompositeFigure 
 
     @Override
     public void undoableEditHappened(UndoableEditEvent e) {
-      owner.fireUndoableEditHappened(e.getEdit());
+      this.eventDispatcher.fireUndoableEditHappened(e.getEdit());
     }
   }
 
@@ -340,5 +356,83 @@ public class GraphicalCompositeFigure extends AbstractAttributedCompositeFigure 
   public void setDraggable() {
     // TODO Auto-generated method stub
     throw new UnsupportedOperationException("Unimplemented method 'setDraggable'");
+  }
+
+  @Override
+  public Double getStartPoint() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getStartPoint'");
+  }
+
+  @Override
+  public Double getEndPoint() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getEndPoint'");
+  }
+
+  @Override
+  public Cursor getCursor(Double p, double scale) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getCursor'");
+  }
+
+  @Override
+  public Collection<Action> getActions(Double p) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getActions'");
+  }
+
+  @Override
+  public Tool getTool(Double p) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getTool'");
+  }
+
+  @Override
+  public Connector findConnector(Double p, ConnectionFigure prototype) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'findConnector'");
+  }
+
+  @Override
+  public Connector findCompatibleConnector(Connector c, boolean isStartConnector) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'findCompatibleConnector'");
+  }
+
+  @Override
+  public Collection<Connector> getConnectors(ConnectionFigure prototype) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getConnectors'");
+  }
+
+  @Override
+  public boolean includes(Figure figure) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'includes'");
+  }
+
+  @Override
+  public void remap(Map<Figure, Figure> oldToNew, boolean disconnectIfNotInMap) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'remap'");
+  }
+
+  @Override
+  public boolean handleDrop(Double p, Collection<Figure> droppedFigures, DrawingView view) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'handleDrop'");
+  }
+
+  @Override
+  public boolean handleMouseClick(Double p, MouseEvent evt, DrawingView view) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'handleMouseClick'");
+  }
+
+  @Override
+  public boolean contains(Double p) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'contains'");
   }
 }

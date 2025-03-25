@@ -11,9 +11,11 @@ import static org.jhotdraw.draw.AttributeKeys.*;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Shape;
+import java.awt.event.MouseEvent;
 import java.awt.font.LineBreakMeasurer;
 import java.awt.font.TextAttribute;
 import java.awt.font.TextLayout;
@@ -26,7 +28,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import javax.swing.Action;
 import org.jhotdraw.draw.AttributeKeys;
+import org.jhotdraw.draw.DrawingView;
+import org.jhotdraw.draw.connector.Connector;
 import org.jhotdraw.draw.handle.FontSizeHandle;
 import org.jhotdraw.draw.handle.Handle;
 import org.jhotdraw.draw.handle.TextOverflowHandle;
@@ -520,8 +526,94 @@ public class TextAreaFigure extends AbstractAttributedDecoratedFigure implements
   }
 
   @Override
-  public void setDraggable() {
+  public java.awt.geom.Point2D.Double getStartPoint() {
     // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'setDraggable'");
+    throw new UnsupportedOperationException("Unimplemented method 'getStartPoint'");
+  }
+
+  @Override
+  public java.awt.geom.Point2D.Double getEndPoint() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getEndPoint'");
+  }
+
+  @Override
+  public Cursor getCursor(java.awt.geom.Point2D.Double p, double scale) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getCursor'");
+  }
+
+  @Override
+  public Collection<Action> getActions(java.awt.geom.Point2D.Double p) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getActions'");
+  }
+
+  @Override
+  public Connector findConnector(java.awt.geom.Point2D.Double p, ConnectionFigure prototype) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'findConnector'");
+  }
+
+  @Override
+  public Connector findCompatibleConnector(Connector c, boolean isStartConnector) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'findCompatibleConnector'");
+  }
+
+  @Override
+  public Collection<Connector> getConnectors(ConnectionFigure prototype) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getConnectors'");
+  }
+
+  @Override
+  public boolean includes(Figure figure) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'includes'");
+  }
+
+  @Override
+  public Figure findFigureInside(java.awt.geom.Point2D.Double p) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'findFigureInside'");
+  }
+
+  @Override
+  public void remap(Map<Figure, Figure> oldToNew, boolean disconnectIfNotInMap) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'remap'");
+  }
+
+  @Override
+  public boolean handleDrop(
+      java.awt.geom.Point2D.Double p, Collection<Figure> droppedFigures, DrawingView view) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'handleDrop'");
+  }
+
+  @Override
+  public boolean handleMouseClick(
+      java.awt.geom.Point2D.Double p, MouseEvent evt, DrawingView view) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'handleMouseClick'");
+  }
+
+  @Override
+  public java.awt.geom.Rectangle2D.Double getBounds() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getBounds'");
+  }
+
+  @Override
+  public java.awt.geom.Rectangle2D.Double getDrawingArea() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getDrawingArea'");
+  }
+
+  @Override
+  public boolean contains(java.awt.geom.Point2D.Double p) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'contains'");
   }
 }

@@ -269,13 +269,15 @@ public abstract class QuadTreeCompositeFigure extends AbstractAttributedComposit
   /** Handles all figure events fired by Figures contained in the Drawing. */
   protected class FigureHandler extends FigureListenerAdapter implements UndoableEditListener {
 
+    protected FigureEventDispatcher eventDispatcher;
+    protected FigureChangeSupport changeListener;
     /**
      * We propagate all edit events from our children to undoable edit listeners, which have
      * registered with us.
      */
     @Override
     public void undoableEditHappened(UndoableEditEvent e) {
-      fireUndoableEditHappened(e.getEdit());
+      this.eventDispatcher.fireUndoableEditHappened(e.getEdit());
     }
 
     @Override

@@ -25,6 +25,7 @@ import org.jhotdraw.utils.geom.path.BezierPath;
 public class LineFigure extends BezierFigure {
 
   private static final long serialVersionUID = 1L;
+  protected FigureEventDispatcher eventDispatcher;
 
   public LineFigure() {
     addNode(new BezierPath.Node(new Point2D.Double(0, 0)));
@@ -66,7 +67,7 @@ public class LineFigure extends BezierFigure {
       final int index = splitSegment(p, (float) (5f / view.getScaleFactor()));
       if (index != -1) {
         final BezierPath.Node newNode = getNode(index);
-        fireUndoableEditHappened(new AbstractUndoableEdit() {
+        this.eventDispatcher.fireUndoableEditHappened(new AbstractUndoableEdit() {
           private static final long serialVersionUID = 1L;
 
           @Override

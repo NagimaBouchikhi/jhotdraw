@@ -49,9 +49,13 @@ public class LineConnectionFigure extends LineFigure implements ConnectionFigure
 
     private static final long serialVersionUID = 1L;
     private LineConnectionFigure owner;
+    protected FigureEventDispatcher eventDispatcher;
+    protected FigureChangeSupport changeListener;
 
     private ConnectionHandler(LineConnectionFigure owner) {
       this.owner = owner;
+      this.changeListener = new FigureChangeSupport(owner);
+      this.eventDispatcher = new FigureEventDispatcher(owner);
     }
 
     @Override
@@ -65,12 +69,12 @@ public class LineConnectionFigure extends LineFigure implements ConnectionFigure
       owner.setStartConnector(null);
       owner.setEndConnector(null);
       }*/
-      owner.fireFigureRequestRemove();
+      this.eventDispatcher.fireFigureRequestRemove();
     }
 
     @Override
     public void figureChanged(FigureEvent e) {
-      if (!owner.isChanging()) {
+      if (!this.changeListener.isChanging()) {
         if (e.getSource() == owner.getStartFigure() || e.getSource() == owner.getEndFigure()) {
           owner.willChange();
           owner.updateConnection();
@@ -391,7 +395,7 @@ public class LineConnectionFigure extends LineFigure implements ConnectionFigure
       final int index = splitSegment(p, (float) (5f / view.getScaleFactor()));
       if (index != -1) {
         final BezierPath.Node newNode = getNode(index);
-        fireUndoableEditHappened(new AbstractUndoableEdit() {
+        this.eventDispatcher.fireUndoableEditHappened(new AbstractUndoableEdit() {
           private static final long serialVersionUID = 1L;
 
           @Override

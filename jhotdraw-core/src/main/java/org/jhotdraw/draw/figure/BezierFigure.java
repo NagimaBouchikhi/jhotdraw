@@ -15,15 +15,19 @@ import static org.jhotdraw.draw.AttributeKeys.STROKE_MITER_LIMIT;
 import static org.jhotdraw.draw.AttributeKeys.UNCLOSED_PATH_FILLED;
 import static org.jhotdraw.draw.AttributeKeys.WINDING_RULE;
 
+import java.awt.Cursor;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
+import java.awt.geom.Point2D.Double;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import javax.swing.Action;
 import javax.swing.undo.AbstractUndoableEdit;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
@@ -37,6 +41,7 @@ import org.jhotdraw.draw.handle.BezierOutlineHandle;
 import org.jhotdraw.draw.handle.BezierScaleHandle;
 import org.jhotdraw.draw.handle.Handle;
 import org.jhotdraw.draw.handle.TransformHandleKit;
+import org.jhotdraw.draw.tool.Tool;
 import org.jhotdraw.utils.geom.Geom;
 import org.jhotdraw.utils.geom.GrowStroke;
 import org.jhotdraw.utils.geom.path.BezierPath;
@@ -67,6 +72,8 @@ public class BezierFigure extends AbstractAttributedFigure {
 
   protected BezierPath path;
 
+  protected FigureEventDispatcher eventDispatcher;
+
   /**
    * The cappedPath BezierPath is derived from variable path. We cache it to increase the drawing
    * speed of the figure. The factor could influence the cappedPath due to Arrow sizes.
@@ -82,6 +89,7 @@ public class BezierFigure extends AbstractAttributedFigure {
    */
   public BezierFigure() {
     this(false);
+    this.eventDispatcher = new FigureEventDispatcher(this);
   }
 
   /**
@@ -93,6 +101,7 @@ public class BezierFigure extends AbstractAttributedFigure {
   public BezierFigure(boolean isClosed) {
     path = new BezierPath();
     attr().set(PATH_CLOSED, isClosed);
+    this.eventDispatcher = new FigureEventDispatcher(this);
   }
 
   /**
@@ -624,7 +633,7 @@ public class BezierFigure extends AbstractAttributedFigure {
       final int index = splitSegment(p, 5f / view.getScaleFactor());
       if (index != -1) {
         final BezierPath.Node newNode = getNode(index);
-        fireUndoableEditHappened(new AbstractUndoableEdit() {
+        this.eventDispatcher.fireUndoableEditHappened(new AbstractUndoableEdit() {
           private static final long serialVersionUID = 1L;
 
           @Override
@@ -658,8 +667,68 @@ public class BezierFigure extends AbstractAttributedFigure {
   }
 
   @Override
-  public void setDraggable() {
+  public Cursor getCursor(Double p, double scale) {
     // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'setDraggable'");
+    throw new UnsupportedOperationException("Unimplemented method 'getCursor'");
+  }
+
+  @Override
+  public Collection<Action> getActions(Double p) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getActions'");
+  }
+
+  @Override
+  public Tool getTool(Double p) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getTool'");
+  }
+
+  @Override
+  public Collection<Connector> getConnectors(ConnectionFigure prototype) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getConnectors'");
+  }
+
+  @Override
+  public boolean includes(Figure figure) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'includes'");
+  }
+
+  @Override
+  public Figure findFigureInside(Double p) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'findFigureInside'");
+  }
+
+  @Override
+  public void remap(Map<Figure, Figure> oldToNew, boolean disconnectIfNotInMap) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'remap'");
+  }
+
+  @Override
+  public boolean handleDrop(Double p, Collection<Figure> droppedFigures, DrawingView view) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'handleDrop'");
+  }
+
+  @Override
+  public java.awt.geom.Rectangle2D.Double getBounds() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getBounds'");
+  }
+
+  @Override
+  public java.awt.geom.Rectangle2D.Double getDrawingArea() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getDrawingArea'");
+  }
+
+  @Override
+  public boolean contains(Double p) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'contains'");
   }
 }

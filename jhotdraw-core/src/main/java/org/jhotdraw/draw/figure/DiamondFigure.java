@@ -7,12 +7,24 @@
  */
 package org.jhotdraw.draw.figure;
 
-import java.awt.*;
-import java.awt.geom.*;
+import java.awt.Cursor;
+import java.awt.Graphics2D;
+import java.awt.event.MouseEvent;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Path2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.Point2D.Double;
+import java.awt.geom.Rectangle2D;
+import java.util.Collection;
+import java.util.Map;
+import javax.swing.Action;
 import org.jhotdraw.draw.AttributeKey;
 import org.jhotdraw.draw.AttributeKeys;
+import org.jhotdraw.draw.DrawingView;
 import org.jhotdraw.draw.connector.ChopDiamondConnector;
 import org.jhotdraw.draw.connector.Connector;
+import org.jhotdraw.draw.handle.Handle;
+import org.jhotdraw.draw.tool.Tool;
 import org.jhotdraw.utils.geom.Geom;
 
 /**
@@ -243,8 +255,92 @@ public class DiamondFigure extends AbstractAttributedFigure {
   // EVENT HANDLING
 
   @Override
-  public void setDraggable() {
+  public Double getStartPoint() {
     // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'setDraggable'");
+    throw new UnsupportedOperationException("Unimplemented method 'getStartPoint'");
+  }
+
+  @Override
+  public Double getEndPoint() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getEndPoint'");
+  }
+
+  @Override
+  public Collection<Handle> createHandles(int detailLevel) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'createHandles'");
+  }
+
+  @Override
+  public Cursor getCursor(Double p, double scale) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getCursor'");
+  }
+
+  @Override
+  public Collection<Action> getActions(Double p) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getActions'");
+  }
+
+  @Override
+  public Tool getTool(Double p) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getTool'");
+  }
+
+  @Override
+  public Collection<Connector> getConnectors(ConnectionFigure prototype) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getConnectors'");
+  }
+
+  @Override
+  public boolean includes(Figure figure) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'includes'");
+  }
+
+  @Override
+  public Figure findFigureInside(Double p) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'findFigureInside'");
+  }
+
+  @Override
+  public void remap(Map<Figure, Figure> oldToNew, boolean disconnectIfNotInMap) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'remap'");
+  }
+
+  @Override
+  public boolean handleDrop(Double p, Collection<Figure> droppedFigures, DrawingView view) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'handleDrop'");
+  }
+
+  @Override
+  public boolean handleMouseClick(Double p, MouseEvent evt, DrawingView view) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'handleMouseClick'");
+  }
+
+  @Override
+  public java.awt.geom.Rectangle2D.Double getBounds() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getBounds'");
+  }
+
+  @Override
+  public java.awt.geom.Rectangle2D.Double getDrawingArea() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getDrawingArea'");
+  }
+
+  @Override
+  public boolean contains(Double p) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'contains'");
   }
 }

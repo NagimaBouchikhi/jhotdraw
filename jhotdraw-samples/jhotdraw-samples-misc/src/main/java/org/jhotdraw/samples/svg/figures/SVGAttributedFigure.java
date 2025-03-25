@@ -9,22 +9,33 @@ package org.jhotdraw.samples.svg.figures;
 
 import static org.jhotdraw.draw.AttributeKeys.STROKE_WIDTH;
 import static org.jhotdraw.draw.AttributeKeys.TRANSFORM;
-import static org.jhotdraw.samples.svg.SVGAttributeKeys.*;
+import static org.jhotdraw.samples.svg.SVGAttributeKeys.OPACITY;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.geom.*;
-import java.awt.image.*;
-import java.util.*;
-import javax.swing.*;
+import java.awt.AlphaComposite;
+import java.awt.Composite;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.event.ActionEvent;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.util.Collection;
+import java.util.LinkedList;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import org.jhotdraw.draw.figure.AbstractAttributedFigure;
+import org.jhotdraw.draw.figure.FigureEventDispatcher;
 import org.jhotdraw.samples.svg.SVGAttributeKeys;
-import org.jhotdraw.utils.util.*;
+import org.jhotdraw.utils.util.ResourceBundleUtil;
 
 /** SVGAttributedFigure. */
 public abstract class SVGAttributedFigure extends AbstractAttributedFigure {
 
   private static final long serialVersionUID = 1L;
+
+  // Add listener
+  protected FigureEventDispatcher eventDispatcher;
 
   public SVGAttributedFigure() {}
 
@@ -101,7 +112,8 @@ public abstract class SVGAttributedFigure extends AbstractAttributedFigure {
         @Override
         public void actionPerformed(ActionEvent evt) {
           willChange();
-          fireUndoableEditHappened(TRANSFORM.setUndoable(SVGAttributedFigure.this, null));
+          eventDispatcher.fireUndoableEditHappened(
+              TRANSFORM.setUndoable(SVGAttributedFigure.this, null));
           changed();
         }
       });

@@ -47,17 +47,24 @@ public class LabeledLineConnectionFigure extends LineConnectionFigure implements
   private List<Figure> children = new ArrayList<>();
   private transient Rectangle2D.Double cachedDrawingArea;
 
+  protected FigureChangeSupport changeListener;
+  protected FigureEventDispatcher eventDispatcher;
+
   /** Handles figure changes in the children. */
   private ChildHandler childHandler = new ChildHandler(this);
 
   private static class ChildHandler extends FigureListenerAdapter
       implements UndoableEditListener, Serializable {
 
+    protected FigureChangeSupport changeListener;
+    protected FigureEventDispatcher eventDispatcher;
     private static final long serialVersionUID = 1L;
     private LabeledLineConnectionFigure owner;
 
     private ChildHandler(LabeledLineConnectionFigure owner) {
       this.owner = owner;
+      this.changeListener = new FigureChangeSupport(owner);
+      this.eventDispatcher = new FigureEventDispatcher(owner);
     }
 
     @Override
@@ -67,23 +74,23 @@ public class LabeledLineConnectionFigure extends LineConnectionFigure implements
 
     @Override
     public void figureChanged(FigureEvent e) {
-      if (!owner.isChanging()) {
+      if (!this.changeListener.isChanging()) {
         owner.willChange();
-        owner.fireFigureChanged(e);
+        this.eventDispatcher.fireFigureChanged(e);
         owner.changed();
       }
     }
 
     @Override
     public void areaInvalidated(FigureEvent e) {
-      if (!owner.isChanging()) {
-        owner.fireAreaInvalidated(e.getInvalidatedArea());
+      if (!this.changeListener.isChanging()) {
+        this.eventDispatcher.fireAreaInvalidated(e.getInvalidatedArea());
       }
     }
 
     @Override
     public void undoableEditHappened(UndoableEditEvent e) {
-      owner.fireUndoableEditHappened(e.getEdit());
+      this.eventDispatcher.fireUndoableEditHappened(e.getEdit());
     }
   }
   ;
@@ -343,12 +350,12 @@ public class LabeledLineConnectionFigure extends LineConnectionFigure implements
 
   @Override
   public void removeCompositeFigureListener(CompositeFigureListener listener) {
-    listenerList.remove(CompositeFigureListener.class, listener);
+    this.eventDispatcher.listenerList.remove(CompositeFigureListener.class, listener);
   }
 
   @Override
   public void addCompositeFigureListener(CompositeFigureListener listener) {
-    listenerList.add(CompositeFigureListener.class, listener);
+    this.eventDispatcher.listenerList.add(CompositeFigureListener.class, listener);
   }
 
   /** Notify all listenerList that have registered interest for notification on this event type. */
@@ -356,7 +363,7 @@ public class LabeledLineConnectionFigure extends LineConnectionFigure implements
     CompositeFigureEvent event = null;
     // Notify all listeners that have registered interest for
     // Guaranteed to return a non-null array
-    Object[] listeners = listenerList.getListenerList();
+    Object[] listeners = this.eventDispatcher.listenerList.getListenerList();
     // Process the listeners last to first, notifying
     // those that are interested in this event
     for (int i = listeners.length - 2; i >= 0; i -= 2) {
@@ -375,7 +382,7 @@ public class LabeledLineConnectionFigure extends LineConnectionFigure implements
     CompositeFigureEvent event = null;
     // Notify all listeners that have registered interest for
     // Guaranteed to return a non-null array
-    Object[] listeners = listenerList.getListenerList();
+    Object[] listeners = this.eventDispatcher.listenerList.getListenerList();
     // Process the listeners last to first, notifying
     // those that are interested in this event
     for (int i = listeners.length - 2; i >= 0; i -= 2) {
