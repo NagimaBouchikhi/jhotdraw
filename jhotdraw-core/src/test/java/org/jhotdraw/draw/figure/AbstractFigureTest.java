@@ -21,6 +21,8 @@ package org.jhotdraw.draw.figure;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import org.jhotdraw.draw.DefaultDrawing;
+import org.jhotdraw.draw.Drawing;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -30,10 +32,16 @@ import org.junit.jupiter.api.Test;
 public class AbstractFigureTest {
 
   AbstractFigureMock mock;
+  FigureChangeSupport changeListener;
+  FigureEventDispatcher eventDispatcher;
+  Drawing draw;
 
   @BeforeEach
   public void init() {
     this.mock = new AbstractFigureMock();
+    this.changeListener = new FigureChangeSupport(mock);
+    this.eventDispatcher = new FigureEventDispatcher(mock);
+    this.draw = new DefaultDrawing();
     // this.grph = new Graphics2D();
   }
 
@@ -44,14 +52,23 @@ public class AbstractFigureTest {
 
   @Test
   public void testWillChangeChangedEvents() {
-    assertEquals(mock.getChangingDepth(), 0);
+    assertEquals(changeListener.getChangingDepth(), 0);
     mock.willChange();
-    assertEquals(mock.getChangingDepth(), 1);
+    assertEquals(changeListener.getChangingDepth(), 1);
     mock.willChange();
-    assertEquals(mock.getChangingDepth(), 2);
+    assertEquals(changeListener.getChangingDepth(), 2);
     mock.changed();
-    assertEquals(mock.getChangingDepth(), 1);
+    assertEquals(changeListener.getChangingDepth(), 1);
     mock.changed();
-    assertEquals(mock.getChangingDepth(), 0);
+    assertEquals(changeListener.getChangingDepth(), 0);
+  }
+
+  // add test pour les notification
+  @Test
+  public void addNotifyTest() {
+    // dessin parent
+    this.mock.addNotify(draw);
+    // assertTrue();
+    // assertEquals();
   }
 }

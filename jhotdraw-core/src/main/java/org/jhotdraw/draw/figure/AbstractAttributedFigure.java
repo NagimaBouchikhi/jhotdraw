@@ -51,7 +51,7 @@ public abstract class AbstractAttributedFigure extends AbstractFigure implements
 
   @Override
   public void willChange() {
-    changeSupport.willChange();
+    this.changeSupport.willChange();
   }
 
   @Override
