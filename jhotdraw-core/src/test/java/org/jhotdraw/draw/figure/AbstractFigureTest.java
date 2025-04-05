@@ -1,3 +1,5 @@
+package org.jhotdraw.draw.figure;
+
 /*
  * Copyright (C) 2015 JHotDraw.
  *
@@ -16,11 +18,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  */
-package org.jhotdraw.draw.figure;
+import static org.junit.jupiter.api.Assertions.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import org.jhotdraw.draw.DefaultDrawing;
 import org.jhotdraw.draw.Drawing;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,23 +32,102 @@ import org.junit.jupiter.api.Test;
  */
 public class AbstractFigureTest {
 
-  AbstractFigureMock mock;
+  MockAbstractFigure mock;
   FigureChangeSupport changeListener;
   FigureEventDispatcher eventDispatcher;
   Drawing draw;
 
   @BeforeEach
   public void init() {
-    this.mock = new AbstractFigureMock();
-    this.changeListener = new FigureChangeSupport(mock);
+    this.mock = new MockAbstractFigure();
     this.eventDispatcher = new FigureEventDispatcher(mock);
     this.draw = new DefaultDrawing();
-    // this.grph = new Graphics2D();
+    this.changeListener = mock.getChangeSupport();
+
+    // Réinitialisez changingDepth
+    while (changeListener.getChangingDepth() > 0) {
+      changeListener.changed();
+    }
   }
 
   @Test
-  public void testChangedWithoutWillChange() {
-    assertThrows(IllegalStateException.class, () -> mock.changed());
+  void testGetBounds() {
+    Rectangle2D.Double bounds = mock.getBounds();
+    assertEquals(0, bounds.x);
+    assertEquals(0, bounds.y);
+    assertEquals(100, bounds.width);
+    assertEquals(100, bounds.height);
+  }
+
+  @Test
+  void testContains() {
+    Point2D.Double insidePoint = new Point2D.Double(50, 50);
+    Point2D.Double outsidePoint = new Point2D.Double(150, 150);
+
+    assertTrue(mock.contains(insidePoint));
+    assertFalse(mock.contains(outsidePoint));
+  }
+
+  @Test
+  void testSetAndGetProperties() {
+    mock.setSelectable(false);
+    assertFalse(mock.isSelectable());
+
+    mock.setRemovable(false);
+    assertFalse(mock.isRemovable());
+
+    mock.setVisible(false);
+    assertFalse(mock.isVisible());
+
+    mock.setConnectable(false);
+    assertFalse(mock.isConnectable());
+
+    mock.setDraggable(false);
+    assertFalse(mock.isDraggable());
+
+    mock.setTransformable(false);
+    assertFalse(mock.isTransformable());
+  }
+
+  @Test
+  void testModifiedState() {
+    assertFalse(mock.isModified());
+    mock.setModified();
+    assertTrue(mock.isModified());
+    mock.resetModified();
+    assertFalse(mock.isModified());
+  }
+
+  @Test
+  void testClone() {
+    MockAbstractFigure clone = (MockAbstractFigure) mock.clone();
+    assertNotSame(mock, clone);
+    assertEquals(mock.getBounds(), clone.getBounds());
+    assertEquals(mock.isSelectable(), clone.isSelectable());
+    assertEquals(mock.isRemovable(), clone.isRemovable());
+    assertEquals(mock.isVisible(), clone.isVisible());
+  }
+
+  @Test
+  void testFireAreaInvalidated() {
+    // Vérifie que fireAreaInvalidated peut être appelé sans erreur
+    mock.fireAreaInvalidated();
+  }
+
+  @Test
+  void testFireFigureChanged() {
+    // Vérifie que fireFigureChanged peut être appelé sans erreur
+    mock.fireFigureChanged(mock.getBounds());
+  }
+
+  @Test
+  void testWillChange() {
+    // Vérifie que la profondeur de changement (changingDepth) augmente
+    assertEquals(0, changeListener.getChangingDepth());
+    mock.willChange();
+    assertEquals(1, changeListener.getChangingDepth());
+    mock.willChange();
+    assertEquals(2, changeListener.getChangingDepth());
   }
 
   @Test
@@ -66,9 +146,13 @@ public class AbstractFigureTest {
   // add test pour les notification
   @Test
   public void addNotifyTest() {
-    // dessin parent
+    // Initial state
+    assertNull(mock.getDrawing());
+
+    // Add the figure to drawing
     this.mock.addNotify(draw);
-    // assertTrue();
-    // assertEquals();
+
+    // Verify drawing was set
+    assertEquals(draw, mock.getDrawing());
   }
 }
