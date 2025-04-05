@@ -18,6 +18,7 @@ import java.util.*;
 import javax.swing.*;
 import org.jhotdraw.draw.*;
 import org.jhotdraw.draw.figure.AbstractAttributedFigure;
+import org.jhotdraw.draw.figure.FigureEventDispatcher;
 import org.jhotdraw.samples.odg.ODGAttributeKeys;
 import org.jhotdraw.samples.odg.ODGConstants;
 import org.jhotdraw.utils.util.*;
@@ -26,6 +27,7 @@ import org.jhotdraw.utils.util.*;
 public abstract class ODGAttributedFigure extends AbstractAttributedFigure implements ODGFigure {
 
   private static final long serialVersionUID = 1L;
+  protected FigureEventDispatcher eventDispatcher = new FigureEventDispatcher(this);
 
   public ODGAttributedFigure() {}
 
@@ -105,7 +107,8 @@ public abstract class ODGAttributedFigure extends AbstractAttributedFigure imple
 
         public void actionPerformed(ActionEvent evt) {
           willChange();
-          fireUndoableEditHappened(TRANSFORM.setUndoable(ODGAttributedFigure.this, null));
+          eventDispatcher.fireUndoableEditHappened(
+              TRANSFORM.setUndoable(ODGAttributedFigure.this, null));
           changed();
         }
       });

@@ -60,6 +60,10 @@ public class FigureEventDispatcher {
     }
   }
 
+  public void fireFigureChanged(FigureEvent event) {
+    fireFigureEvent((listener, e) -> listener.figureChanged(e), () -> event);
+  }
+
   /** Notify all listeners that have registered interest for notification on this event type. */
   public void fireAreaInvalidated() {
     fireAreaInvalidated(source.getDrawingArea());

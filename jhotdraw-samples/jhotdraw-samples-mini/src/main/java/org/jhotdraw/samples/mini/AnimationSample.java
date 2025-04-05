@@ -12,7 +12,7 @@ import static org.jhotdraw.draw.AttributeKeys.*;
 
 import java.awt.Color;
 import java.awt.event.*;
-import java.awt.geom.Rectangle2D;
+import java.awt.geom.Point2D;
 import javax.swing.*;
 import org.jhotdraw.draw.*;
 import org.jhotdraw.draw.figure.EllipseFigure;
@@ -40,8 +40,12 @@ public class AnimationSample extends javax.swing.JFrame {
       public void actionPerformed(ActionEvent e) {
         double alpha = 2d * Math.PI * (System.currentTimeMillis() % 1000) / 1000d;
         ellipse.willChange();
-        ellipse.setBounds(new Rectangle2D.Double(
-            160 + Math.sin(alpha) * 100, 160 + Math.cos(alpha) * 100, 80, 80));
+        double x = 160 + Math.sin(alpha) * 100;
+        double y = 160 + Math.cos(alpha) * 100;
+        Point2D.Double anchor = new Point2D.Double(x, y);
+        Point2D.Double lead = new Point2D.Double(x + 80, y + 80);
+
+        ellipse.setBounds(anchor, lead);
         ellipse.changed();
       }
     });

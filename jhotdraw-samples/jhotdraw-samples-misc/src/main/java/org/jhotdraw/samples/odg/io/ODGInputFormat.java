@@ -7,6 +7,7 @@
  */
 package org.jhotdraw.samples.odg.io;
 
+import static org.jhotdraw.draw.AttributeKeys.*;
 import static org.jhotdraw.samples.odg.ODGAttributeKeys.*;
 import static org.jhotdraw.samples.odg.ODGConstants.*;
 
@@ -489,7 +490,9 @@ public class ODGInputFormat implements InputFormat {
   private ODGFigure createEnhancedGeometryEllipseFigure(
       Rectangle2D.Double bounds, Map<AttributeKey<?>, Object> a) throws IOException {
     ODGEllipseFigure figure = new ODGEllipseFigure();
-    figure.setBounds(bounds);
+    Point2D.Double start = new Point2D.Double(bounds.x, bounds.y);
+    Point2D.Double end = new Point2D.Double(bounds.x + bounds.width, bounds.y + bounds.height);
+    figure.setBounds(start, end);
     figure.attr().setAttributes(a);
     return figure;
   }
@@ -498,7 +501,9 @@ public class ODGInputFormat implements InputFormat {
   private ODGFigure createEnhancedGeometryRectangleFigure(
       Rectangle2D.Double bounds, Map<AttributeKey<?>, Object> a) throws IOException {
     ODGRectFigure figure = new ODGRectFigure();
-    figure.setBounds(bounds);
+    Point2D.Double start = new Point2D.Double(bounds.x, bounds.y);
+    Point2D.Double end = new Point2D.Double(bounds.x + bounds.width, bounds.y + bounds.height);
+    figure.setBounds(start, end);
     figure.attr().setAttributes(a);
     return figure;
   }

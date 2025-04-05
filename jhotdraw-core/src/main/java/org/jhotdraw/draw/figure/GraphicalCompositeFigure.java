@@ -22,7 +22,7 @@ import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import javax.swing.Action;
@@ -98,7 +98,7 @@ public class GraphicalCompositeFigure extends AbstractAttributedCompositeFigure 
     public void figureChanged(FigureEvent e) {
       if (!owner.isChanging()) {
         owner.willChange();
-        this.changeListener.fireFigureChanged(e.getFigure());
+        this.eventDispatcher.fireFigureChanged(e);
         owner.changed();
       }
     }
@@ -303,10 +303,22 @@ public class GraphicalCompositeFigure extends AbstractAttributedCompositeFigure 
     return that;
   }
 
-  public void remap(HashMap<Figure, Figure> oldToNew, boolean disconnectIfNotInMap) {
+  @Override
+  public void remap(Map<Figure, Figure> oldToNew, boolean disconnectIfNotInMap) {
     super.remap(oldToNew, disconnectIfNotInMap);
+
+    // Handle the presentation figure
     if (presentationFigure != null) {
-      presentationFigure.remap(oldToNew, disconnectIfNotInMap);
+      if (oldToNew.containsKey(presentationFigure)) {
+        setPresentationFigure(oldToNew.get(presentationFigure));
+      } else if (disconnectIfNotInMap) {
+        setPresentationFigure(null);
+      }
+
+      // If the presentation figure is a composite, remap its children too
+      if (presentationFigure instanceof CompositeFigure) {
+        ((CompositeFigure) presentationFigure).remap(oldToNew, disconnectIfNotInMap);
+      }
     }
   }
 
@@ -353,86 +365,64 @@ public class GraphicalCompositeFigure extends AbstractAttributedCompositeFigure 
   }
 
   @Override
-  public void setDraggable() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'setDraggable'");
-  }
-
-  @Override
   public Double getStartPoint() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getStartPoint'");
+    Rectangle2D.Double bounds = getBounds();
+    return new Point2D.Double(bounds.x, bounds.y);
   }
 
   @Override
   public Double getEndPoint() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getEndPoint'");
+    Rectangle2D.Double bounds = getBounds();
+    return new Point2D.Double(bounds.x + bounds.width, bounds.y + bounds.height);
   }
 
   @Override
   public Cursor getCursor(Double p, double scale) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getCursor'");
+    return Cursor.getDefaultCursor();
   }
 
   @Override
   public Collection<Action> getActions(Double p) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getActions'");
+    return Collections.emptyList();
   }
 
   @Override
   public Tool getTool(Double p) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getTool'");
+    return null;
   }
 
   @Override
   public Connector findConnector(Double p, ConnectionFigure prototype) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'findConnector'");
+    return null;
   }
 
   @Override
   public Connector findCompatibleConnector(Connector c, boolean isStartConnector) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'findCompatibleConnector'");
+    return null;
   }
 
   @Override
   public Collection<Connector> getConnectors(ConnectionFigure prototype) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getConnectors'");
+    return Collections.emptyList();
   }
 
   @Override
   public boolean includes(Figure figure) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'includes'");
-  }
-
-  @Override
-  public void remap(Map<Figure, Figure> oldToNew, boolean disconnectIfNotInMap) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'remap'");
+    return getChildren().contains(figure) || figure == this;
   }
 
   @Override
   public boolean handleDrop(Double p, Collection<Figure> droppedFigures, DrawingView view) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'handleDrop'");
+    return false;
   }
 
   @Override
   public boolean handleMouseClick(Double p, MouseEvent evt, DrawingView view) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'handleMouseClick'");
+    return false;
   }
 
   @Override
   public boolean contains(Double p) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'contains'");
+    return contains(p, 1.0);
   }
 }

@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 import javax.swing.event.EventListenerList;
@@ -748,5 +749,32 @@ public abstract class AbstractAttributedCompositeFigure extends AbstractAttribut
     Rectangle2D.Double r = getBounds();
     Geom.grow(r, width, width);
     return r;
+  }
+
+  @Override
+  public void remap(Map<Figure, Figure> oldToNew, boolean disconnectIfNotInMap) {
+    // Create a copy to avoid concurrent modification
+    List<Figure> childrenCopy = new ArrayList<>(getChildren());
+
+    for (Figure child : childrenCopy) {
+      if (oldToNew.containsKey(child)) {
+        // Replace the child with its mapped version
+        int index = indexOf(child);
+        basicRemoveChild(index);
+        basicAdd(index, oldToNew.get(child));
+      } else if (disconnectIfNotInMap) {
+        // Remove the child if not in map and disconnectIfNotInMap is true
+        remove(child);
+      }
+    }
+
+    // Also handle the case where children need to remap their own children
+    for (Figure child : getChildren()) {
+      if (child instanceof CompositeFigure) {
+        ((CompositeFigure) child).remap(oldToNew, disconnectIfNotInMap);
+      }
+    }
+
+    invalidate();
   }
 }

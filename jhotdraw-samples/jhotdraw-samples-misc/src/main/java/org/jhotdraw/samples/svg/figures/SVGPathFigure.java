@@ -19,16 +19,21 @@ import static org.jhotdraw.samples.svg.SVGAttributeKeys.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
+import java.awt.geom.Point2D.Double;
 import java.awt.image.BufferedImage;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.undo.*;
 import org.jhotdraw.draw.*;
 import org.jhotdraw.draw.AttributeKeys.WindingRule;
+import org.jhotdraw.draw.connector.Connector;
 import org.jhotdraw.draw.figure.AbstractAttributedCompositeFigure;
+import org.jhotdraw.draw.figure.ConnectionFigure;
 import org.jhotdraw.draw.figure.Figure;
+import org.jhotdraw.draw.figure.FigureEventDispatcher;
 import org.jhotdraw.draw.handle.Handle;
 import org.jhotdraw.draw.handle.TransformHandleKit;
+import org.jhotdraw.draw.tool.Tool;
 import org.jhotdraw.samples.svg.Gradient;
 import org.jhotdraw.samples.svg.SVGAttributeKeys;
 import org.jhotdraw.utils.geom.Geom;
@@ -47,6 +52,8 @@ public class SVGPathFigure extends AbstractAttributedCompositeFigure implements 
   // private transient Rectangle2D.Double cachedDrawingArea;
   /** This is used to perform faster hit testing. */
   private transient Shape cachedHitShape;
+
+  protected FigureEventDispatcher eventDispatcher;
 
   public SVGPathFigure() {
     add(new SVGBezierFigure());
@@ -358,7 +365,7 @@ public class SVGPathFigure extends AbstractAttributedCompositeFigure implements 
         @Override
         public void actionPerformed(ActionEvent evt) {
           willChange();
-          fireUndoableEditHappened(TRANSFORM.setUndoable(SVGPathFigure.this, null));
+          eventDispatcher.fireUndoableEditHappened(TRANSFORM.setUndoable(SVGPathFigure.this, null));
           changed();
         }
       });
@@ -398,7 +405,7 @@ public class SVGPathFigure extends AbstractAttributedCompositeFigure implements 
           willChange();
           flattenTransform();
           changed();
-          fireUndoableEditHappened(edit);
+          eventDispatcher.fireUndoableEditHappened(edit);
         }
       });
     }
@@ -515,8 +522,56 @@ public class SVGPathFigure extends AbstractAttributedCompositeFigure implements 
   }
 
   @Override
-  public void setDraggable() {
+  public Double getStartPoint() {
     // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'setDraggable'");
+    throw new UnsupportedOperationException("Unimplemented method 'getStartPoint'");
+  }
+
+  @Override
+  public Double getEndPoint() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getEndPoint'");
+  }
+
+  @Override
+  public Cursor getCursor(Double p, double scale) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getCursor'");
+  }
+
+  @Override
+  public Tool getTool(Double p) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getTool'");
+  }
+
+  @Override
+  public Connector findConnector(Double p, ConnectionFigure prototype) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'findConnector'");
+  }
+
+  @Override
+  public Connector findCompatibleConnector(Connector c, boolean isStartConnector) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'findCompatibleConnector'");
+  }
+
+  @Override
+  public Collection<Connector> getConnectors(ConnectionFigure prototype) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getConnectors'");
+  }
+
+  @Override
+  public boolean includes(Figure figure) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'includes'");
+  }
+
+  @Override
+  public boolean handleDrop(Double p, Collection<Figure> droppedFigures, DrawingView view) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'handleDrop'");
   }
 }

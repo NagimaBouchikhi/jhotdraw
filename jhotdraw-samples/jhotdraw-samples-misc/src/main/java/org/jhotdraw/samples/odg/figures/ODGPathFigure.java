@@ -18,6 +18,7 @@ import static org.jhotdraw.samples.odg.ODGAttributeKeys.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
+import java.awt.geom.Point2D.Double;
 import java.awt.image.BufferedImage;
 import java.util.*;
 import javax.swing.*;
@@ -28,8 +29,10 @@ import org.jhotdraw.draw.connector.Connector;
 import org.jhotdraw.draw.figure.AbstractAttributedCompositeFigure;
 import org.jhotdraw.draw.figure.ConnectionFigure;
 import org.jhotdraw.draw.figure.Figure;
+import org.jhotdraw.draw.figure.FigureEventDispatcher;
 import org.jhotdraw.draw.handle.Handle;
 import org.jhotdraw.draw.handle.TransformHandleKit;
+import org.jhotdraw.draw.tool.Tool;
 import org.jhotdraw.samples.odg.Gradient;
 import org.jhotdraw.samples.odg.ODGAttributeKeys;
 import org.jhotdraw.samples.odg.ODGConstants;
@@ -46,6 +49,8 @@ public class ODGPathFigure extends AbstractAttributedCompositeFigure implements 
 
   /** This cachedPath is used for drawing. */
   private transient Path2D.Double cachedPath;
+
+  protected FigureEventDispatcher eventDispatcher;
 
   public ODGPathFigure() {
     add(new ODGBezierFigure());
@@ -328,7 +333,7 @@ public class ODGPathFigure extends AbstractAttributedCompositeFigure implements 
         @Override
         public void actionPerformed(ActionEvent evt) {
           willChange();
-          fireUndoableEditHappened(TRANSFORM.setUndoable(ODGPathFigure.this, null));
+          eventDispatcher.fireUndoableEditHappened(TRANSFORM.setUndoable(ODGPathFigure.this, null));
           changed();
         }
       });
@@ -368,7 +373,7 @@ public class ODGPathFigure extends AbstractAttributedCompositeFigure implements 
           willChange();
           flattenTransform();
           changed();
-          fireUndoableEditHappened(edit);
+          eventDispatcher.fireUndoableEditHappened(edit);
         }
       });
     }
@@ -481,8 +486,44 @@ public class ODGPathFigure extends AbstractAttributedCompositeFigure implements 
   }
 
   @Override
-  public void setDraggable() {
+  public Double getStartPoint() {
     // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'setDraggable'");
+    throw new UnsupportedOperationException("Unimplemented method 'getStartPoint'");
+  }
+
+  @Override
+  public Double getEndPoint() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getEndPoint'");
+  }
+
+  @Override
+  public Cursor getCursor(Double p, double scale) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getCursor'");
+  }
+
+  @Override
+  public Tool getTool(Double p) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getTool'");
+  }
+
+  @Override
+  public Collection<Connector> getConnectors(ConnectionFigure prototype) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getConnectors'");
+  }
+
+  @Override
+  public boolean includes(Figure figure) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'includes'");
+  }
+
+  @Override
+  public boolean handleDrop(Double p, Collection<Figure> droppedFigures, DrawingView view) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'handleDrop'");
   }
 }
