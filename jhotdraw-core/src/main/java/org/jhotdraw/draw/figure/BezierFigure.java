@@ -25,6 +25,7 @@ import java.awt.geom.Point2D.Double;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import javax.swing.Action;
@@ -668,67 +669,61 @@ public class BezierFigure extends AbstractAttributedFigure {
 
   @Override
   public Cursor getCursor(Double p, double scale) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getCursor'");
+    return Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR);
   }
 
   @Override
   public Collection<Action> getActions(Double p) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getActions'");
+    return Collections.emptyList();
   }
 
   @Override
   public Tool getTool(Double p) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getTool'");
+    return null;
   }
 
   @Override
   public Collection<Connector> getConnectors(ConnectionFigure prototype) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getConnectors'");
+    List<Connector> connectors = new ArrayList<>();
+    connectors.add(new ChopBezierConnector(this));
+    return connectors;
   }
 
   @Override
   public boolean includes(Figure figure) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'includes'");
+    return figure == this;
   }
 
   @Override
   public Figure findFigureInside(Double p) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'findFigureInside'");
+    return contains(p) ? this : null;
   }
 
   @Override
   public void remap(Map<Figure, Figure> oldToNew, boolean disconnectIfNotInMap) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'remap'");
+    // nothing to remap
   }
 
   @Override
   public boolean handleDrop(Double p, Collection<Figure> droppedFigures, DrawingView view) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'handleDrop'");
+    return false;
   }
 
   @Override
   public java.awt.geom.Rectangle2D.Double getBounds() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getBounds'");
+    return path.getBounds2D();
   }
 
   @Override
   public java.awt.geom.Rectangle2D.Double getDrawingArea() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getDrawingArea'");
+    Rectangle2D.Double r = path.getBounds2D();
+    double g = AttributeKeys.getPerpendicularHitGrowth(this, 1.0) + 1d;
+    Geom.grow(r, g, g);
+    return r;
   }
 
   @Override
   public boolean contains(Double p) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'contains'");
+    return contains(p, 1.0);
   }
 }

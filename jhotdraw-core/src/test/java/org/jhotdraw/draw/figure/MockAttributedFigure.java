@@ -1,5 +1,6 @@
 package org.jhotdraw.draw.figure;
 
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
@@ -7,79 +8,126 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Double;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import javax.swing.Action;
 import org.jhotdraw.draw.DrawingView;
 import org.jhotdraw.draw.connector.Connector;
+import org.jhotdraw.draw.handle.BoundsOutlineHandle;
 import org.jhotdraw.draw.handle.Handle;
+import org.jhotdraw.draw.handle.ResizeHandleKit;
 import org.jhotdraw.draw.tool.Tool;
 
 public class MockAttributedFigure extends AbstractAttributedFigure {
 
   private static final long serialVersionUID = 1L;
   private Rectangle2D.Double bounds = new Rectangle2D.Double(0, 0, 100, 100);
+  private List<String> methodCalls = new ArrayList<>();
+  private FigureChangeSupport changeSupport;
 
-  @Override
-  public void drawFill(Graphics2D g) {
-    g.fill(bounds);
+  public MockAttributedFigure() {
+    super();
+    this.changeSupport = new FigureChangeSupport(this);
+    // Initialize default attributes for testing
+    attr().set(org.jhotdraw.draw.AttributeKeys.FILL_COLOR, Color.RED);
+    attr().set(org.jhotdraw.draw.AttributeKeys.STROKE_COLOR, Color.BLACK);
+    attr().set(org.jhotdraw.draw.AttributeKeys.STROKE_WIDTH, 1.0);
+    attr().set(org.jhotdraw.draw.AttributeKeys.TEXT_COLOR, Color.BLUE);
   }
 
-  @Override
-  public void drawStroke(Graphics2D g) {
-    g.draw(bounds);
+  public boolean wasMethodCalled(String methodName) {
+    return methodCalls.contains(methodName);
   }
 
-  @Override
-  public void drawText(Graphics2D g) {
-    // No text by default
+  public FigureChangeSupport getChangeSupport() {
+    return changeSupport;
   }
 
-  @Override
-  public Rectangle2D.Double getBounds(double scale) {
-    return (Rectangle2D.Double) bounds.clone();
+  public void resetMethodCalls() {
+    methodCalls.clear();
+  }
+
+  public List<String> getMethodCalls() {
+    return new ArrayList<>(methodCalls);
   }
 
   @Override
   public Rectangle2D.Double getBounds() {
-    return getBounds(1.0);
+    methodCalls.add("getBounds");
+    return bounds;
+  }
+
+  @Override
+  public void drawFill(Graphics2D g) {
+    methodCalls.add("drawFill");
+  }
+
+  @Override
+  public void drawStroke(Graphics2D g) {
+    methodCalls.add("drawStroke");
+  }
+
+  @Override
+  public void drawText(Graphics2D g) {
+    methodCalls.add("drawText");
   }
 
   @Override
   public Rectangle2D.Double getDrawingArea() {
-    return getDrawingArea(1.0);
-  }
-
-  @Override
-  public Rectangle2D.Double getDrawingArea(double scale) {
-    Rectangle2D.Double area = (Rectangle2D.Double) bounds.clone();
-    area.add(bounds.getMaxX(), bounds.getMaxY());
-    return area;
+    methodCalls.add("getDrawingArea");
+    // Add some padding to simulate stroke width
+    double padding = 2.0;
+    return new Rectangle2D.Double(
+        bounds.x - padding,
+        bounds.y - padding,
+        bounds.width + 2 * padding,
+        bounds.height + 2 * padding);
   }
 
   @Override
   public Collection<Handle> createHandles(int detailLevel) {
-    return Collections.emptyList();
+    methodCalls.add("createHandles");
+    List<Handle> handles = new ArrayList<>();
+
+    if (detailLevel < 0) {
+      // For negative detail level, add a BoundsOutlineHandle
+      handles.add(new BoundsOutlineHandle(this));
+    } else if (detailLevel == 0) {
+      // For detail level 0, add resize handles
+      handles.add(ResizeHandleKit.northWest(this));
+      handles.add(ResizeHandleKit.northEast(this));
+      handles.add(ResizeHandleKit.southWest(this));
+      handles.add(ResizeHandleKit.southEast(this));
+
+      // Optionally add more handles like these:
+      handles.add(ResizeHandleKit.north(this));
+      handles.add(ResizeHandleKit.south(this));
+      handles.add(ResizeHandleKit.east(this));
+      handles.add(ResizeHandleKit.west(this));
+    }
+
+    return handles;
   }
 
   @Override
-  public void setBounds(Double start, Double end) {
-    bounds = new Rectangle2D.Double(
-        Math.min(start.x, end.x),
-        Math.min(start.y, end.y),
-        Math.abs(end.x - start.x),
-        Math.abs(end.y - start.y));
+  public void setBounds(Point2D.Double start, Point2D.Double end) {
+    methodCalls.add("setBounds");
+    bounds.setFrameFromDiagonal(start, end);
   }
 
   @Override
   public Double getStartPoint() {
-    return new Double(bounds.x, bounds.y);
+    methodCalls.add("getStartPoint");
+    return new Point2D.Double(bounds.x, bounds.y);
   }
 
   @Override
   public Double getEndPoint() {
-    return new Double(bounds.x + bounds.width, bounds.y + bounds.height);
+    methodCalls.add("getEndPoint");
+    return new Point2D.Double(bounds.x + bounds.width, bounds.y + bounds.height);
   }
 
   @Override
@@ -170,21 +218,28 @@ public class MockAttributedFigure extends AbstractAttributedFigure {
 
   @Override
   public void willChange() {
-    // no need implementation
+    changeSupport.willChange();
   }
 
   @Override
   public void changed() {
-    // no need implementation
+    changeSupport.changed();
+    methodCalls.add("changed");
   }
 
   @Override
   public void invalidate() {
-    // no need implementation
+    methodCalls.add("invalidate");
   }
 
   @Override
   public void validate() {
-    // no need implementation
+    methodCalls.add("validate");
+  }
+
+  @Override
+  public java.awt.geom.Rectangle2D.Double getBounds(double scale) {
+    methodCalls.add("getBounds with scale");
+    return new Rectangle2D.Double(bounds.x, bounds.y, bounds.width, bounds.height);
   }
 }
